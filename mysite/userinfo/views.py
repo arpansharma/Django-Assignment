@@ -11,6 +11,7 @@ def index(request):
 		responseUserInfo = requests.get(userInfoUrl).json()
 
 		userInfo = {
+		'usrnm' : username,
 		'name' : responseUserInfo['name'],
 		'location' : responseUserInfo['location'],
 		'publicGistsCount' : responseUserInfo['public_gists'],
@@ -18,6 +19,7 @@ def index(request):
 		}
 
 		userinformation = UserInformation(
+			usr_nm = userInfo['usrnm'],
 			user_name = userInfo['name'],
 			location = userInfo['location'],
 			public_gists_count = userInfo['publicGistsCount'],

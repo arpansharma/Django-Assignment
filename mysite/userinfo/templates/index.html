@@ -6,7 +6,7 @@
 </form>
 <br><br>
 
-<table>
+<table cellpadding="50">
 	<thead>  
     	<tr>
         	<th> Username </th>
@@ -17,10 +17,12 @@
         </tr>
     </thead>
     <tbody>
-	    {% for info in usr_info %}
-		    <tr>
-			    <td>{{info.usrnm}}</td>>
-		    </tr>
-	    {% endfor %}
+	    <tr>
+			<td>{{usr_info.usrnm}}</td>
+			<td>{{usr_info.name}}</td>
+			<td>{{usr_info.location}}</td>
+			<td>{{usr_info.publicGistsCount}}</td>
+			<td>{{usr_info.publicReposCount}}</td>
+		</tr>	    
     </tbody>
  </table> 

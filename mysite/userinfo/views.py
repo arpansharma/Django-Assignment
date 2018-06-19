@@ -4,6 +4,9 @@ from .models import UserInformation
 
 def index(request):
 	
+	if request.method =='GET':
+		return render(request, 'index.html', userDataObject)
+
 	if request.method == 'POST':
 		print ("Hurrah!")
 		username = request.POST.get('usrname')
@@ -27,4 +30,6 @@ def index(request):
 		
 		userinformation.save()
 
+		userDataObject = {'usr_info' : userInfo}
+		
 	return render(request, 'index.html')

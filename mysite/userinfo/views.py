@@ -36,6 +36,7 @@ def index(request):
             'following' : responseUserInfo['following'],
             }
 
+<<<<<<< HEAD
             #Saving to the database
             userinformation = UserInformation(
                 usr_nm = userInfo['usrnm'],
@@ -50,3 +51,8 @@ def index(request):
 
         userData = {'usr_info' : userinformation.__dict__}
         return render(request, 'index.html', userData)
+=======
+		userDataObject = {'usr_info' : userInfo}
+		print (userDataObject)	
+		return render(request, "index.html", userDataObject)
+>>>>>>> 49be4f36c80855fe7b93f3dc81d96a952d2b8498

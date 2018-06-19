@@ -41,4 +41,3 @@ def index(request):
 		userDataObject = {'usr_info' : userInfo}
 		print (userDataObject)	
 		return render(request, "index.html", userDataObject)
-		#return render(request, "/?username=userInfo['usrnm']")

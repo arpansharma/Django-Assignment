@@ -7,7 +7,7 @@ class UserInformation(models.Model):
 	location = models.CharField(max_length=250)
 	public_gists_count = models.PositiveIntegerField()
 	public_repos_count = models.PositiveIntegerField()
-	created_at = models.DateTimeField(default=datetime.now, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.usr_nm

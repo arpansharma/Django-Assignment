@@ -76,7 +76,7 @@ def index(request):
             #Getting Repositories - Info from API
             repoInfoUrl = 'https://api.github.com/users/' + username + '/repos'
             responserepo_info = requests.get(repoInfoUrl).json()
-            repolist = []       
+            repoinformationlist = []       
             for r_value in responserepo_info:                              
                 repoinformation = RepoInformation(
                 usr_nm = username,
@@ -84,21 +84,7 @@ def index(request):
                 repo_url = r_value['html_url'],
                 repo_language = r_value.get('language') or 'NA')
                 repoinformation.save()
-                repolist.append(model_to_dict(repoinformation))
-                #Getting Branch - Info from API
-                #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/branches{/branch}
-                branchInfoUrl = 'https://api.github.com/repos/' + username + '/' + r_value['name'] + '/branches'
-                responsebranch_info = request.get(branchInfoUrl).json()
-                for b_value in responsebranch_info:
-                    branchinformation = BranchInformation(
-                    repo_name = r_value['name'],
-                    branch_name = b_value['name'])
-                    print(branchinformation)
-                    branchinformation.save()
-                    # #Getting Commit - Info from API
-                    # #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/commits/bf81c06ef0a2314c6a2761ebe164490e8267afa7
-                    # commitInfoUrl = 'https://api.github.com/repos/' + username + '/' + r_value['name']
-
+                repoinformationlist.append(model_to_dict(repoinformation))
 
         else:
             userinformation = userinformation[0]
@@ -123,8 +109,41 @@ def index(request):
 
 def repo(request):
     if request.method == 'GET':
+        #Getting Branch - Info from API
+        #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/branches{/branch}
         repo_id = request.GET.get('repo_id')
         if repo_id:
+            repo = RepoInformation.objects.filter(id=repo_id)
+            if repo:
+                repo = repo[0]
+                branchinformation = BranchInformation.objects.filter(repo_name=repo.repo_name)
+                if not branchinformation:
+                    branchInfoUrl = 'https://api.github.com/repos/' + repo.usr_nm + '/' + repo.repo_name + '/branches'
+                    responsebranch_info = requests.get(branchInfoUrl).json()
+                    branchinformationlist = []
+                    for b_value in responsebranch_info:
+                        branchinformation = BranchInformation(
+                        repo_name = repo.repo_name,
+                        branch_name = b_value['name'])
+                        branchinformation.save()
+                        branchinformationlist.append(model_to_dict(branchinformation))
+                        # #Getting Commit - Info from API
+                        # #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/commits/bf81c06ef0a2314c6a2761ebe164490e8267afa7
+                        # commitInfoUrl = 'https://api.github.com/repos/' + username + '/' + r_value['name']
+                else:
+                    branchinformationlist = []
+                    for value in branchinformation:
+                        branchinformationlist.append(model_to_dict(value))
+
+                data = {
+                    'repo_info': repo,
+                    'branch_info': branchinformationlist
+                }
+                return render(request, 'repo.html', data)
+
+            else:
+                return render(request, 'repo.html')
+        else:
             return render(request, 'repo.html')
 
 def branch(request):

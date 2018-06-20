@@ -43,7 +43,7 @@
                 <td>
                     {% if repo_info %}
                         {% for details in repo_info %}
-                            <span>{{details.repo_name}}<br></span>
+                            <span><a href='./repo/?repo_id={{details.id}}'>{{details.repo_name}}</a><br></span>
                         {% endfor %}
                     {% endif %}
                 </td>

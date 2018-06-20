@@ -1,0 +1,26 @@
+<h1> Hello from repo.html </h1>
+
+<br><br>
+<table cellpadding="40">
+	<thead>  
+    	<tr>
+        	<th> Repo Name </th>
+            <th> Repo URL </th>
+            <th> Repo Language </th>
+            <th> List of Branches </th>            
+        </tr>
+    </thead>
+    <tbody>        
+	    <tr>
+            {% if usr_info %}
+            <td>{{usr_info.usr_nm}}</td>
+            <td>{{usr_info.user_name}}</td>
+            <td>{{usr_info.location}}</td>
+            <td>{{usr_info.public_gists_count}}</td>
+            <td>{{usr_info.public_repos_count}}</td>
+            {% elif error %}
+            <td> {{error}} </td>
+            {% endif %}
+		</tr>	            
+    </tbody>
+ </table> 

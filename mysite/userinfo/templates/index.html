@@ -1,4 +1,4 @@
-<h1> Hello from index file </h1>
+<h1> Hello from index.html </h1>
 <form method="POST">	
 	<input type="text" name="usrname" placeholder="Enter a username ">
     <button name="" type="submit">Submit</button>
@@ -15,19 +15,42 @@
             <th> Count of public repos</th>
             <th> Followers</th>
             <th> Following</th>
+            <th> List of Repositories</th>
         </tr>
     </thead>
     <tbody>        
-	    <tr>
+        <tr>
             {% if usr_info %}
-            <td>{{usr_info.usr_nm}}</td>
-            <td>{{usr_info.user_name}}</td>
-            <td>{{usr_info.location}}</td>
-            <td>{{usr_info.public_gists_count}}</td>
-            <td>{{usr_info.public_repos_count}}</td>
+                <td>{{usr_info.usr_nm}}</td>
+                <td>{{usr_info.user_name}}</td>
+                <td>{{usr_info.location}}</td>
+                <td>{{usr_info.public_gists_count}}</td>
+                <td>{{usr_info.public_repos_count}}</td>
+                <td>
+                    {% if fr_info %}
+                        {% for user in fr_info %}
+                            <span>{{user.name}}</span>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if fg_info %}
+                        {% for user in fg_info %}
+                            <span>{{user.name}}</span>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if repo_info %}
+                        {% for details in repo_info %}
+                            <span>{{details.repo_name}}<br></span>
+                        {% endfor %}
+                    {% endif %}
+                </td>
             {% elif error %}
-            <td> {{error}} </td>
+                <td> {{error}} </td>
             {% endif %}
-		</tr>	            
-    </tbody>
+            
+        </tr>               
+</tbody>
  </table> 

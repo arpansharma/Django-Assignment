@@ -24,6 +24,7 @@ class RepoInformation(models.Model):
 
 class BranchInformation(models.Model):
 	#branch_id = models.ForeignKey(RepoInformation, on_delete=models.CASCADE)
+	usr_nm = models.CharField(max_length=30)
 	repo_name = models.CharField(max_length=250)
 	branch_name = models.CharField(max_length=30)
 
@@ -33,6 +34,7 @@ class BranchInformation(models.Model):
 class CommitInformation(models.Model):
 	#commit_id = models.ForeignKey(BranchInformation, on_delete=models.CASCADE)
 	branch_name = models.CharField(max_length=30)
+	commit_message = models.CharField(max_length=250)
 	commit_url = models.URLField()
 	commit_author = models.CharField(max_length=30)
 	commit_date = models.DateTimeField()

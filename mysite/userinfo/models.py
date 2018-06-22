@@ -29,10 +29,11 @@ class BranchInformation(models.Model):
 	branch_name = models.CharField(max_length=30)
 
 	def __str__(self):
-		return self.branch_name
+		return self.repo_name
 
 class CommitInformation(models.Model):
 	#commit_id = models.ForeignKey(BranchInformation, on_delete=models.CASCADE)
+	repo_name = models.CharField(max_length=250)
 	branch_name = models.CharField(max_length=30)
 	commit_message = models.CharField(max_length=250)
 	commit_url = models.URLField()

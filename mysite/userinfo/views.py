@@ -151,7 +151,7 @@ def branch(request):
             branch = BranchInformation.objects.filter(id=branch_id)
             if branch:
                 branch = branch[0]
-                commitinformation = CommitInformation.objects.filter(branch_name=branch.branch_name)
+                commitinformation = CommitInformation.objects.filter(branch_name=branch.branch_name, repo_name=branch.repo_name)
                 if not commitinformation:
                     # Getting Commit - Info from API
                     # https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/commits/
@@ -161,6 +161,7 @@ def branch(request):
                     commitinformationlist = []
                     for c_value in responsecommit_info:
                         commitinformation = CommitInformation(
+                        repo_name = branch.repo_name,
                         branch_name = branch.branch_name,
                         commit_url = c_value['html_url'],
                         commit_message = c_value['commit']['message'],                        

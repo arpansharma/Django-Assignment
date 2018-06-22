@@ -10,14 +10,17 @@
     </thead>
     <tbody>        
 	    <tr>
-            {% if usr_info %}
-            <td>{{usr_info.usr_nm}}</td>
-            <td>{{usr_info.user_name}}</td>
-            <td>{{usr_info.location}}</td>
-            <td>{{usr_info.public_gists_count}}</td>
-            <td>{{usr_info.public_repos_count}}</td>
+            {% if branch_info %}
+                <td>{{branch_info.branch_name}}</td>
+                <td>
+                    {% if commit_info %}
+                        {% for details in commit_info %}
+                            <span>{{details.commit_message}}<br></span>
+                        {% endfor %}
+                    {% endif %}
+                </td>
             {% elif error %}
-            <td> {{error}} </td>
+                <td> {{error}} </td>
             {% endif %}
 		</tr>	            
     </tbody>

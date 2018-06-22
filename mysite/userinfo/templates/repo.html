@@ -19,7 +19,7 @@
                 <td>
                     {% if branch_info %}
                         {% for details in branch_info %}
-                            <span>{{details.branch_name}}<br></span>
+                            <span><a href='./branch/?branch_id={{details.id}}'>{{details.branch_name}}</a><br></span>
                         {% endfor %}
                     {% endif %}
                 </td>

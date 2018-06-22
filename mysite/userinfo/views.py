@@ -110,7 +110,7 @@ def index(request):
 def repo(request):
     if request.method == 'GET':
         #Getting Branch - Info from API
-        #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/branches{/branch}
+        #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/branches
         repo_id = request.GET.get('repo_id')
         if repo_id:
             repo = RepoInformation.objects.filter(id=repo_id)
@@ -122,14 +122,12 @@ def repo(request):
                     responsebranch_info = requests.get(branchInfoUrl).json()
                     branchinformationlist = []
                     for b_value in responsebranch_info:
-                        branchinformation = BranchInformation(
+                        branchinformation = BranchInformation(    
+                        usr_nm = repo.usr_nm,                    
                         repo_name = repo.repo_name,
                         branch_name = b_value['name'])
                         branchinformation.save()
-                        branchinformationlist.append(model_to_dict(branchinformation))
-                        # #Getting Commit - Info from API
-                        # #https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/commits/bf81c06ef0a2314c6a2761ebe164490e8267afa7
-                        # commitInfoUrl = 'https://api.github.com/repos/' + username + '/' + r_value['name']
+                        branchinformationlist.append(model_to_dict(branchinformation))                        
                 else:
                     branchinformationlist = []
                     for value in branchinformation:
@@ -150,6 +148,41 @@ def branch(request):
     if request.method == 'GET':
         branch_id = request.GET.get('branch_id')
         if branch_id:
+            branch = BranchInformation.objects.filter(id=branch_id)
+            if branch:
+                branch = branch[0]
+                commitinformation = CommitInformation.objects.filter(branch_name=branch.branch_name)
+                if not commitinformation:
+                    # Getting Commit - Info from API
+                    # https://api.github.com/repos/arpansharma/Android-Linux-Server-Connectivity/commits/
+                    commitInfoUrl = 'https://api.github.com/repos/' + branch.usr_nm + '/' + branch.repo_name + '/commits'
+                    print (commitInfoUrl)
+                    responsecommit_info = requests.get(commitInfoUrl).json()
+                    commitinformationlist = []
+                    for c_value in responsecommit_info:
+                        commitinformation = CommitInformation(
+                        branch_name = branch.branch_name,
+                        commit_url = c_value['html_url'],
+                        commit_message = c_value['commit']['message'],                        
+                        commit_author = c_value['commit']['author']['name'],
+                        commit_date = c_value['commit']['author']['date'])
+                        commitinformation.save()
+                        print (commitinformation)
+                        commitinformationlist.append(model_to_dict(commitinformation))                        
+                else:
+                    commitinformationlist = []
+                    for value in commitinformation:
+                        commitinformationlist.append(model_to_dict(value))
+
+                data = {
+                    'branch_info' : branch,                    
+                    'commit_info': commitinformationlist
+                }
+                return render(request, 'branch.html', data)
+
+            else:
+                return render(request, 'branch.html')
+        else:
             return render(request, 'branch.html')
 
 def commit(request):
